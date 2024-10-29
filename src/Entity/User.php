@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -17,6 +18,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Assert\Email(
+		message: 'Cette adresse email n\'est pas valide.'
+    )]
     private ?string $email = null;
 
     /**
@@ -29,12 +33,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\Length(
+		min: 8,
+	    max: 120,
+	    minMessage: 'Le mot de passe doit contenir au moins {{ limit }} caractères.',
+	    maxMessage: 'Le mot de passe doit contenir au maximum {{ limit }} caractères.'
+    )]
+    #[Assert\Regex(
+		pattern: '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/',
+	    message: 'Le mot de passe doit contenir au moins une lettre minuscule(az), une lettre majuscule(AZ) et un chiffre(0-9).'
+	)]
     private ?string $password = null;
 
     #[ORM\Column(length: 120)]
+    #[Assert\Blank]
+    #[Assert\Length(
+		min: 2,
+	    max: 60,
+	    minMessage: 'Le prénom doit contenir au moins {{ limit }} caractères.',
+	    maxMessage: 'Le prénom doit contenir au maximum {{ limit }} caractères.'
+    )]
     private ?string $first_name = null;
 
     #[ORM\Column(length: 60)]
+    #[Assert\Blank]
+    #[Assert\Length(
+		min: 2,
+	    max: 60,
+	    minMessage: 'Le nom doit contenir au moins {{ limit }} caractères.',
+	    maxMessage: 'Le nom doit contenir au maximum {{ limit }} caractères.'
+	)]
     private ?string $last_name = null;
 
     public function getId(): ?int
