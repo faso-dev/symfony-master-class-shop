@@ -1,0 +1,58 @@
+{# templates/_partials/_hero.html.twig #}
+<section class="hero position-relative overflow-hidden">
+    {# Fond avec motif subtil #}
+    <div class="hero-bg position-absolute w-100 h-100"></div>
+
+    <div class="container position-relative py-6">
+        <div class="row align-items-center min-vh-75">
+            <div class="col-lg-6 py-5">
+                {# Badge animé #}
+                <div class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 mb-4 animate-float">
+                    <i class="bi bi-stars me-1"></i>
+                    Nouvelle Collection 2024
+                </div>
+
+                {# Titre avec gradient #}
+                <h1 class="display-3 fw-bold mb-4 hero-title">
+                    Découvrez Notre
+                    <span class="gradient-text">Collection Unique</span>
+                </h1>
+
+                {# Description avec meilleure typographie #}
+                <p class="lead text-secondary fw-normal mb-5 hero-text">
+                    Des produits d'exception sélectionnés avec passion,
+                    <br class="d-none d-md-block">
+                    pour une expérience shopping inoubliable.
+                </p>
+
+                {# CTA améliorés #}
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ path('app_shop_product_list') }}"
+                       class="btn btn-primary btn-lg px-5 py-3 rounded-pill hover-lift">
+                        <i class="bi bi-arrow-right-circle me-2"></i>
+                        Explorer la Collection
+                    </a>
+                    <a href="#featured"
+                       class="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill hover-lift-light">
+                        <i class="bi bi-star me-2"></i>
+                        Produits Vedettes
+                    </a>
+                </div>
+            </div>
+
+            {# Section image avec meilleur design #}
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="hero-image-wrapper position-relative">
+                    <div class="hero-image-container p-4">
+                        <img src="{{ asset('images/hero.png') }}"
+                             class="img-fluid rounded-4 shadow-lg hover-scale"
+                             alt="Collection unique">
+                    </div>
+                    {# Éléments décoratifs #}
+                    <div class="hero-shape-1"></div>
+                    <div class="hero-shape-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

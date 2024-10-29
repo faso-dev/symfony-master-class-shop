@@ -1,0 +1,70 @@
+{# templates/shop/index.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Accueil - ShopSym{% endblock %}
+
+{% block body %}
+    {# Hero Section #}
+    {% include '_partials/_hero.html.twig' %}
+
+    {# Featured Products Section #}
+    <section id="featured">
+        <div class="container">
+            <h2 class="display-6 text-center mb-5">Nos Produits en Vedette</h2>
+
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for product in featured_products %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="product-card shadow-sm">
+                            <div class="product-image-wrapper">
+                                <img src="{{ asset(product.image) }}"
+                                     alt="{{ product.name }}"
+                                     class="product-image">
+                                <div class="product-badges">
+                                    <span class="product-badge bg-warning bg-opacity-75 text-dark">
+                                        <i class="bi bi-star-fill me-1"></i> En Vedette
+                                    </span>
+                                    {% if product.stock <= 5 and product.stock > 0 %}
+                                        <span class="product-badge bg-danger bg-opacity-75 text-white">
+                                            Stock Limité
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="product-content">
+                                <h2 class="product-title">{{ product.name }}</h2>
+                                <p class="product-description">{{ product.description }}</p>
+                                <div class="product-price">
+                                    {{ product.price|format_currency('XOF') }}
+                                </div>
+                                <div class="product-footer">
+                                    <div class="stock-status">
+                                        {% if product.stock > 5 %}
+                                            <span class="text-success">
+                                                <i class="bi bi-check-circle-fill"></i> En Stock
+                                            </span>
+                                        {% elseif product.stock > 0 %}
+                                            <span class="text-warning">
+                                                <i class="bi bi-exclamation-circle-fill"></i>
+                                                Plus que {{ product.stock }}
+                                            </span>
+                                        {% else %}
+                                            <span class="text-danger">
+                                                <i class="bi bi-x-circle-fill"></i>
+                                                Rupture de stock
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                    <a href="{{ path('app_shop_product_show', {id: product.id}) }}"
+                                       class="btn btn-outline-primary view-btn">
+                                        Voir <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endblock %}

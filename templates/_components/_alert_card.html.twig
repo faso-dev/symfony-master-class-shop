@@ -1,0 +1,14 @@
+{# templates/admin/_components/_alert_card.html.twig #}
+{% macro alert_card(title, message, type, icon) %}
+    <div class="alert-card">
+        <div class="alert-card-content {{ type }}">
+            <div class="alert-icon">
+                <i class="bi bi-{{ icon }}"></i>
+            </div>
+            <div class="alert-info">
+                <h4 class="alert-title">{{ title }}</h4>
+                <p class="alert-message">{{ message }}</p>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

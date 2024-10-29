@@ -1,0 +1,121 @@
+{# templates/shop/product/list.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos Produits{% endblock %}
+
+{% block body %}
+
+    {# Search Section #}
+    <section class="search-section">
+        <div class="container mt-5">
+            <div class="search-container">
+                <div class="text-center mb-4">
+                    <h1 class="display-5 fw-bold mb-3">Notre Collection</h1>
+                    <p class="text-muted lead">Découvrez nos produits soigneusement sélectionnés</p>
+                </div>
+                <div class="search-box">
+                    <i class="bi bi-search search-icon"></i>
+                    <input type="text"
+                           class="search-input"
+                           placeholder="Rechercher un produit..."
+                           id="searchInput">
+                </div>
+            </div>
+        </div>
+    </section>
+        <div class="container">
+            {# Filters #}
+            <div class="filters-section">
+                <div class="d-flex flex-wrap">
+                    <button class="filter-btn active">Tous</button>
+                    <button class="filter-btn">En Stock</button>
+                    <button class="filter-btn">En Vedette</button>
+                    <button class="filter-btn">Nouveautés</button>
+                </div>
+            </div>
+
+            {# Products Grid #}
+            <div class="products-grid">
+                <div class="row g-4">
+                    {% for product in products %}
+                        <div class="col-md-6 col-lg-4">
+                            <div class="product-card shadow-sm">
+                                <div class="product-image-wrapper">
+                                    <img src="{{ asset(product.image) }}"
+                                         alt="{{ product.name }}"
+                                         class="product-image">
+                                    <div class="product-badges">
+                                        {% if product.featured %}
+                                            <span class="product-badge bg-warning bg-opacity-75 text-dark">
+                                                <i class="bi bi-star-fill me-1"></i> En Vedette
+                                            </span>
+                                        {% endif %}
+                                        {% if product.stock <= 5 and product.stock > 0 %}
+                                            <span class="product-badge bg-danger bg-opacity-75 text-white">
+                                                Stock Limité
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <h2 class="product-title">{{ product.name }}</h2>
+                                    <p class="product-description">{{ product.description }}</p>
+                                    <div class="product-price">
+                                        {{ product.price|format_currency('XOF') }}
+                                    </div>
+                                    <div class="product-footer">
+                                        <div class="stock-status">
+                                            {% if product.stock > 5 %}
+                                                <span class="text-success">
+                                                    <i class="bi bi-check-circle-fill"></i> En Stock
+                                                </span>
+                                            {% elseif product.stock > 0 %}
+                                                <span class="text-warning">
+                                                    <i class="bi bi-exclamation-circle-fill"></i>
+                                                    Plus que {{ product.stock }}
+                                                </span>
+                                            {% else %}
+                                                <span class="text-danger">
+                                                    <i class="bi bi-x-circle-fill"></i>
+                                                    Rupture de stock
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                        <a href="{{ path('app_shop_product_show', {id: product.id}) }}"
+                                           class="btn btn-outline-primary view-btn">
+                                            Voir <i class="bi bi-arrow-right ms-1"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('searchInput');
+            const productCards = document.querySelectorAll('.product-card');
+
+            searchInput.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+
+                productCards.forEach(card => {
+                    const title = card.querySelector('.product-title').textContent.toLowerCase();
+                    const description = card.querySelector('.product-description').textContent.toLowerCase();
+
+                    if (title.includes(searchTerm) || description.includes(searchTerm)) {
+                        card.closest('.col-md-6').style.display = '';
+                    } else {
+                        card.closest('.col-md-6').style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,193 @@
+{% extends 'admin/base.html.twig' %}
+{% import "_components/_stat_card.html.twig" as cards %}
+{% import "_components/_alert_card.html.twig" as alerts %}
+
+{% block body %}
+    <div class="container mt-8rem">
+        {# Header #}
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h2 mb-0">Tableau de Bord</h1>
+        </div>
+
+        {# Stats Cards #}
+        <div class="row">
+            <div class="col-md-3">
+                {{ cards.stat_card('Total Produits', stats.total_products, 'primary', 'box-seam') }}
+            </div>
+            <div class="col-md-3">
+                {{ cards.stat_card('Produits Actifs', stats.active_products, 'success', 'check-circle') }}
+            </div>
+            <div class="col-md-3">
+                {{ cards.stat_card('En Vedette', stats.featured_products, 'warning', 'star') }}
+            </div>
+            <div class="col-md-3">
+                {{ cards.stat_card('Stock Total', stats.total_stock, 'info', 'boxes') }}
+            </div>
+        </div>
+
+        {# Alerts #}
+        {% if stats.out_of_stock > 0 or stats.low_stock > 0 %}
+            <div class="row mt-4">
+                {% if stats.out_of_stock > 0 %}
+                    <div class="col-md-6">
+                        {{ alerts.alert_card(
+                            'Rupture de Stock',
+                            stats.out_of_stock ~ ' produit(s) en rupture de stock',
+                            'danger',
+                            'exclamation-triangle'
+                        ) }}
+                    </div>
+                {% endif %}
+
+                {% if stats.low_stock > 0 %}
+                    <div class="col-md-6">
+                        {{ alerts.alert_card(
+                            'Stock Faible',
+                            stats.low_stock ~ ' produit(s) en stock faible',
+                            'alert-warning',
+                            'exclamation-circle'
+                        ) }}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="card data-table mt-4 border-0 shadow-sm">
+            <div class="card-header bg-white py-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="card-title mb-0 d-flex align-items-center">
+                            <i class="bi bi-table me-2 text-primary"></i>
+                            Derniers Produits Ajoutés
+                        </h5>
+                        <p class="text-muted small mb-0 mt-1">
+                            Mise à jour {{ "now"|date("d/m/Y H:i") }}
+                        </p>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a href="{{ path('app_admin_product_list') }}"
+                           class="btn btn-light rounded-pill btn-sm px-3 d-flex align-items-center">
+                            <i class="bi bi-grid me-2"></i>
+                            Tous les produits
+                        </a>
+                        <a href="{{ path('app_admin_product_create') }}"
+                           class="btn btn-primary rounded-pill btn-sm px-3 d-flex align-items-center">
+                            <i class="bi bi-plus-circle me-2"></i>
+                            Ajouter
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light">
+                        <tr>
+                            <th class="px-4 py-3 text-uppercase small">
+                                <i class="bi bi-image-fill me-1"></i> Image
+                            </th>
+                            <th class="py-3 text-uppercase small">
+                                <i class="bi bi-tag-fill me-1"></i> Nom
+                            </th>
+                            <th class="py-3 text-uppercase small">
+                                <i class="bi bi-currency-euro me-1"></i> Prix
+                            </th>
+                            <th class="py-3 text-uppercase small">
+                                <i class="bi bi-box-seam-fill me-1"></i> Stock
+                            </th>
+                            <th class="py-3 text-uppercase small">
+                                <i class="bi bi-toggle-on me-1"></i> Statut
+                            </th>
+                            <th class="px-4 py-3 text-uppercase small text-center">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody class="border-top-0">
+                        {% for product in stats.latest_products %}
+                            <tr class="align-middle">
+                                <td class="px-4">
+                                    <div class="product-img-wrapper">
+                                        <img src="{{ asset(product.image) }}"
+                                             alt="{{ product.name }}"
+                                             class="product-img">
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-medium text-dark">{{ product.name }}</span>
+                                        <small class="text-muted">ID: #{{ product.id }}</small>
+                                    </div>
+                                </td>
+                                <td class="fw-medium">{{ product.price|format_currency('EUR') }}</td>
+                                <td>
+                                    {% if product.stock == 0 %}
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="status-dot bg-danger"></span>
+                                            <span class="status-badge bg-danger bg-opacity-10 text-danger">
+                                                Rupture
+                                            </span>
+                                        </div>
+                                    {% elseif product.stock <= 5 %}
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="status-dot bg-warning"></span>
+                                            <span class="status-badge bg-warning bg-opacity-10 text-warning">
+                                                {{ product.stock }} en stock
+                                            </span>
+                                        </div>
+                                    {% else %}
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="status-dot bg-success"></span>
+                                            <span class="status-badge bg-success bg-opacity-10 text-success">
+                                                {{ product.stock }} en stock
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if product.active %}
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="status-dot bg-success"></span>
+                                            <span class="status-badge bg-success bg-opacity-10 text-success">
+                                                Actif
+                                            </span>
+                                        </div>
+                                    {% else %}
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span class="status-dot bg-danger"></span>
+                                            <span class="status-badge bg-danger bg-opacity-10 text-danger">
+                                                Inactif
+                                            </span>
+                                        </div>
+                                    {% endif %}
+                                </td>
+                                <td class="px-4">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{{ path('app_admin_product_edit', {id: product.id}) }}"
+                                           class="btn btn-sm btn-light rounded-pill px-3 d-flex align-items-center">
+                                            <i class="bi bi-pencil me-2"></i>
+                                            Éditer
+                                        </a>
+                                        <button type="button"
+                                                class="btn btn-sm btn-danger rounded-pill px-3 d-flex align-items-center">
+                                            <i class="bi bi-trash me-2"></i>
+                                            Supprimer
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center py-5">
+                                    <div class="d-flex flex-column align-items-center">
+                                        <i class="bi bi-inbox text-muted" style="font-size: 2rem;"></i>
+                                        <p class="text-muted mt-2 mb-0">Aucun produit trouvé</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

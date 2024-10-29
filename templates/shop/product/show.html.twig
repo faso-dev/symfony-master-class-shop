@@ -1,0 +1,162 @@
+{# templates/shop/product/show.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ product.name }}{% endblock %}
+
+{% block body %}
+<section class="product-detail">
+    <div class="container mt-5">
+        <div class="row">
+            {# Image Gallery #}
+            <div class="col-lg-6">
+                <div class="product-gallery shadow">
+                    <img src="{{ asset(product.image) }}"
+                         alt="{{ product.name }}"
+                         class="product-main-image">
+                    <div class="product-badges">
+                        {% if product.featured %}
+                            <span class="product-badge bg-warning bg-opacity-75 text-dark">
+                                <i class="bi bi-star-fill me-1"></i> En Vedette
+                            </span>
+                        {% endif %}
+                        {% if product.stock <= 5 and product.stock > 0 %}
+                            <span class="product-badge bg-danger bg-opacity-75 text-white">
+                                Stock Limité
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {# Product Info #}
+            <div class="col-lg-6">
+                <div class="product-info">
+                    <h1 class="product-title">{{ product.name }}</h1>
+
+                    <div class="product-price-section">
+                        <p class="product-price">{{ product.price|format_currency('XOF') }}</p>
+                        <div class="stock-info">
+                            {% if product.stock > 5 %}
+                            <span class="badge bg-success px-3 py-2">
+                                <i class="bi bi-check-circle-fill me-1"></i>
+                                En Stock
+                            </span>
+                            <div class="progress stock-progress flex-grow-1">
+                                <div class="progress-bar bg-success"
+                                     style="width: {{ (product.stock / 100) * 100 }}%"></div>
+                            </div>
+                            {% elseif product.stock > 0 %}
+                                <span class="badge bg-warning px-3 py-2">
+                                    <i class="bi bi-exclamation-circle-fill me-1"></i>
+                                    Plus que {{ product.stock }} en stock
+                                </span>
+                                <div class="progress stock-progress flex-grow-1">
+                                    <div class="progress-bar bg-warning"
+                                         style="width: {{ (product.stock / 100) * 100 }}%"></div>
+                                </div>
+                            {% else %}
+                                <span class="badge bg-danger px-3 py-2">
+                                    <i class="bi bi-x-circle-fill me-1"></i>
+                                    Rupture de stock
+                                </span>
+                                <div class="progress stock-progress flex-grow-1">
+                                    <div class="progress-bar bg-danger" style="width: 0%"></div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <div class="product-description">
+                        {{ product.description|nl2br }}
+                    </div>
+
+                    <div class="product-meta">
+                        <div class="meta-item">
+                            <div class="meta-icon bg-primary">
+                                <i class="bi bi-box-seam"></i>
+                            </div>
+                            <div class="meta-text">
+                                <h4 class="meta-title">Stock</h4>
+                                <p class="meta-value">{{ product.stock }} unités disponibles</p>
+                            </div>
+                        </div>
+
+                        <div class="meta-item">
+                            <div class="meta-icon" style="background: #198754">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <div class="meta-text">
+                                <h4 class="meta-title">Qualité garantie</h4>
+                                <p class="meta-value">Produit vérifié et certifié</p>
+                            </div>
+                        </div>
+
+                        <div class="meta-item">
+                            <div class="meta-icon" style="background: #0dcaf0">
+                                <i class="bi bi-truck"></i>
+                            </div>
+                            <div class="meta-text">
+                                <h4 class="meta-title">Livraison rapide</h4>
+                                <p class="meta-value">Expédition sous 24h</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {# Actions Section #}
+                    <div class="mt-4">
+                        <div class="d-grid gap-2 d-md-flex">
+                            {% if product.stock > 0 %}
+                                <button class="btn btn-primary btn-lg flex-grow-1 rounded-pill">
+                                    <i class="bi bi-bag-plus me-2"></i>
+                                    Ajouter au panier
+                                </button>
+                            {% else %}
+                                <button class="btn btn-secondary btn-lg flex-grow-1 rounded-pill" disabled>
+                                    <i class="bi bi-x-circle me-2"></i>
+                                    Indisponible
+                                </button>
+                            {% endif %}
+                            <button class="btn btn-outline-primary btn-lg rounded-pill">
+                                <i class="bi bi-heart"></i>
+                            </button>
+                            <button class="btn btn-outline-primary btn-lg rounded-pill">
+                                <i class="bi bi-share"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <button id="scrollTopBtn"
+            class="btn btn-primary rounded-circle position-fixed bottom-0 end-0 m-4 d-none">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        // Scroll to Top Button
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollBtn = document.getElementById('scrollTopBtn');
+
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 300) {
+                    scrollBtn.classList.remove('d-none');
+                } else {
+                    scrollBtn.classList.add('d-none');
+                }
+            });
+
+            scrollBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+{% endblock %}

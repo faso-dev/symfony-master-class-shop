@@ -1,0 +1,13 @@
+{% macro stat_card(title, value, type, icon) %}
+    <div class="stat-card h-100">
+        <div class="stat-card-content {{ type }}">
+            <div class="stat-card-icon">
+                <i class="bi bi-{{ icon }}"></i>
+            </div>
+            <div class="stat-card-info">
+                <h3 class="stat-card-value">{{ value }}</h3>
+                <p class="stat-card-title">{{ title }}</p>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

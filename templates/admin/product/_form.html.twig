@@ -1,0 +1,147 @@
+{# templates/admin/product/_form.html.twig #}
+{{ form_start(form, {
+    'attr': {
+        'class': 'needs-validation',
+        'novalidate': 'novalidate'
+    }
+}) }}
+
+<div class="row g-4">
+    {# Colonne principale #}
+    <div class="col-md-8">
+        {# Informations principales #}
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3">
+                <h3 class="card-title m-0 fs-5">
+                    <i class="bi bi-info-circle text-primary me-2"></i>
+                    Informations Produit
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="mb-4">
+                    {{ form_label(form.name, 'Nom du produit', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.name, {
+                        'attr': {
+                            'class': 'form-control',
+                            'placeholder': 'Ex: T-shirt Premium'
+                        }
+                    }) }}
+                    {% if form_errors(form.name) %}
+                        <div class="invalid-feedback d-block">{{ form_errors(form.name) }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="mb-4">
+                    {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                    {{ form_widget(form.description, {
+                        'attr': {
+                            'class': 'form-control',
+                            'rows': '5',
+                            'placeholder': 'Description détaillée du produit'
+                        }
+                    }) }}
+                    {% if form_errors(form.description) %}
+                        <div class="invalid-feedback d-block">{{ form_errors(form.description) }}</div>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        {{ form_label(form.price, 'Prix', {'label_attr': {'class': 'form-label'}}) }}
+                        <div class="input-group">
+                            {{ form_widget(form.price, {
+                                'attr': {
+                                    'class': 'form-control',
+                                    'placeholder': '0.00'
+                                }
+                            }) }}
+                        </div>
+                        {% if form_errors(form.price) %}
+                            <div class="invalid-feedback d-block">{{ form_errors(form.price) }}</div>
+                        {% endif %}
+                    </div>
+
+                    <div class="col-md-6 mb-4">
+                        {{ form_label(form.stock, 'Stock', {'label_attr': {'class': 'form-label'}}) }}
+                        {{ form_widget(form.stock, {
+                            'attr': {
+                                'class': 'form-control',
+                                'placeholder': 'Quantité disponible'
+                            }
+                        }) }}
+                        {% if form_errors(form.stock) %}
+                            <div class="invalid-feedback d-block">{{ form_errors(form.stock) }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Image #}
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3">
+                <h3 class="card-title m-0 fs-5">
+                    <i class="bi bi-image text-primary me-2"></i>
+                    Image
+                </h3>
+            </div>
+            <div class="card-body">
+                {{ form_label(form.image, 'URL de l\'image', {'label_attr': {'class': 'form-label'}}) }}
+                {{ form_widget(form.image, {
+                    'attr': {
+                        'class': 'form-control',
+                        'placeholder': '/images/products/mon-image.jpg'
+                    }
+                }) }}
+                {% if form_errors(form.image) %}
+                    <div class="invalid-feedback d-block">{{ form_errors(form.image) }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    {# Colonne de droite - Paramètres #}
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm sticky-top" style="top: 1rem;">
+            <div class="card-header bg-white py-3">
+                <h3 class="card-title m-0 fs-5">
+                    <i class="bi bi-gear text-primary me-2"></i>
+                    Paramètres
+                </h3>
+            </div>
+            <div class="card-body">
+                {# Switch Status #}
+                <div class="setting-item mb-4">
+                    <div class="form-check form-switch p-0 mb-2">
+                        {{ form_row(form.active, {'attr': {'class': 'form-check-input'}}) }}
+                    </div>
+                    <small class="text-muted">Active ou désactive la visibilité du produit</small>
+                </div>
+
+                {# Switch Featured #}
+                <div class="setting-item mb-4">
+                    <div class="form-check form-switch p-0 mb-2">
+                        {{ form_widget(form.featured, {'attr': {'class': 'form-check-input'}}) }}
+                    </div>
+                    <small class="text-muted">Afficher en vedette sur la page d'accueil</small>
+                </div>
+
+                {# Boutons d'action #}
+                <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-space-between gap-3">
+                        <a href="{{ path('app_admin_product_list') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle me-2"></i>
+                            Annuler
+                        </a>
+                        <button type="submit" class="btn btn-primary admin-btn">
+                            <i class="bi bi-check-circle me-2"></i>
+                            {{ button_label|default('Enregistrer') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ form_end(form) }}

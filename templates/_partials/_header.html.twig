@@ -1,0 +1,93 @@
+{# templates/_partials/_header.html.twig #}
+<header class="header-wrapper fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            {# Logo avec effet hover #}
+            <a class="navbar-brand fw-bold d-flex align-items-center" href="{{ path('app_shop_index') }}">
+                <span class="brand-icon me-2">
+                    <i class="bi bi-bag-heart-fill"></i>
+                </span>
+                <span class="brand-text">Symfony Shop</span>
+            </a>
+
+            {# Bouton hamburger amélioré #}
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMain">
+                {# Menu principal avec effets de survol #}
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.get('_route') == 'app_shop_index' ? 'active' }}"
+                           href="{{ path('app_shop_index') }}">
+                            <i class="bi bi-house me-1"></i>
+                            Accueil
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.get('_route') == 'app_shop_product_list' ? 'active' }}"
+                           href="{{ path('app_shop_product_list') }}">
+                            <i class="bi bi-grid me-1"></i>
+                            Produits
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.get('_route') starts with 'app_shop_product_featured' ? 'active' }}"
+                           href="{{ path('app_shop_index') }}#featured">
+                            <i class="bi bi-star me-1"></i>
+                            En Vedette
+                        </a>
+                    </li>
+                </ul>
+
+                {# Menu utilisateur avec badges et animations #}
+                <ul class="navbar-nav">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item">
+                            <a class="nav-link nav-btn admin-btn"
+                               href="{{ path('app_admin_dashboard') }}">
+                                <i class="bi bi-speedometer2 me-1"></i>
+                                Administration
+                            </a>
+                        </li>
+                    {% endif %}
+
+                    {% if app.user %}
+                        <li class="nav-item ms-2">
+                            <a class="nav-link nav-btn logout-btn"
+                               href="{{ path('app_logout') }}">
+                                <i class="bi bi-box-arrow-right me-1"></i>
+                                Déconnexion
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-2">
+                            <a class="nav-link nav-btn login-btn"
+                               href="{{ path('app_login') }}">
+                                <i class="bi bi-person me-1"></i>
+                                Connexion
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+{# Ajoutez ce script dans votre block javascripts #}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const header = document.querySelector('.header-wrapper');
+        const scrollThreshold = 50;
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > scrollThreshold) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    });
+</script>
