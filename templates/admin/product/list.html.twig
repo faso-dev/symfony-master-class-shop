@@ -3,201 +3,209 @@
 {% block title %}Gestion des produits{% endblock %}
 
 {% block body %}
-<div class="container mt-5">
-    {# Header Section #}
-    <div class="page-header">
-        <div class="container-fluid">
-            <div class="row g-2 align-items-center">
-                <div class="col">
-                    <div class="page-pretitle text-muted">
-                        Administration
+    <div class="container mt-5">
+        {# Header Section #}
+        <div class="page-header">
+            <div class="container-fluid">
+                <div class="row g-2 align-items-center">
+                    <div class="col">
+                        <div class="page-pretitle text-muted">
+                            Administration
+                        </div>
+                        <h2 class="page-title">
+                            Gestion des produits
+                        </h2>
                     </div>
-                    <h2 class="page-title">
-                        Gestion des produits
-                    </h2>
-                </div>
-                <div class="col-auto ms-auto">
-                    <div class="btn-list">
-                        <span class="d-none d-sm-inline">
-                            <a href="{{ path('app_admin_dashboard') }}" class="btn btn-light rounded-pill">
-                                <i class="bi bi-arrow-left me-2"></i>
-                                Dashboard
+                    <div class="col-auto ms-auto">
+                        <div class="btn-list">
+                            <span class="d-none d-sm-inline">
+                                <a href="{{ path('app_admin_dashboard') }}" class="btn btn-light rounded-pill">
+                                    <i class="bi bi-arrow-left me-2"></i>
+                                    Dashboard
+                                </a>
+                            </span>
+                            <a href="{{ path('app_admin_product_create') }}"
+                               class="btn btn-primary rounded-pill d-none d-sm-inline-block">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                Nouveau produit
                             </a>
-                        </span>
-                        <a href="{{ path('app_admin_product_create') }}"
-                           class="btn btn-primary rounded-pill d-none d-sm-inline-block">
-                            <i class="bi bi-plus-circle me-2"></i>
-                            Nouveau produit
-                        </a>
-                        <a href="{{ path('app_admin_product_create') }}"
-                           class="btn btn-primary rounded-pill d-sm-none btn-icon">
-                            <i class="bi bi-plus-circle"></i>
-                        </a>
+                            <a href="{{ path('app_admin_product_create') }}"
+                               class="btn btn-primary rounded-pill d-sm-none btn-icon">
+                                <i class="bi bi-plus-circle"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {# Search and Filters #}
-    <div class="card mb-4 border-0 shadow-sm">
-        <div class="card-body">
-            <div class="row g-3">
-                <div class="col-12 col-md-4">
-                    <div class="input-group">
-                        <span class="input-group-text bg-white border-end-0">
-                            <i class="bi bi-search text-muted"></i>
-                        </span>
-                        <input type="text" class="form-control border-start-0 ps-0"
-                               id="searchInput" placeholder="Rechercher un produit...">
+        {# Search and Filters #}
+        <div class="card mb-4 border-0 shadow-sm">
+            <div class="card-body">
+                <div class="row g-3">
+                    <div class="col-12 col-md-4">
+                        <form>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-end-0">
+                                    <i class="bi bi-search text-muted"></i>
+                                </span>
+                                <label for="searchInput">
+                                    <input
+                                            type="text"
+                                            name="q"
+                                            value="{{ app.request.query.get('q') }}"
+                                            class="form-control border-start-0 ps-0 search"
+                                            id="searchInput" placeholder="Rechercher un produit..."/>
+                                </label>
+                            </div>
+                        </form>
                     </div>
-                </div>
-                <div class="col-12 col-md-8">
-                    <div class="d-flex gap-2 justify-content-md-end">
-                        <button class="btn btn-light rounded-pill">
-                            <i class="bi bi-funnel me-2"></i>
-                            Filtrer
-                        </button>
-                        <button class="btn btn-light rounded-pill">
-                            <i class="bi bi-sort-down me-2"></i>
-                            Trier
-                        </button>
+                    <div class="col-12 col-md-8">
+                        <div class="d-flex gap-2 justify-content-md-end">
+                            <button class="btn btn-light rounded-pill">
+                                <i class="bi bi-funnel me-2"></i>
+                                Filtrer
+                            </button>
+                            <button class="btn btn-light rounded-pill">
+                                <i class="bi bi-sort-down me-2"></i>
+                                Trier
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    {# Products Table #}
-    <div class="card border-0 shadow-sm">
-        <div class="table-responsive">
-            <table class="table table-hover table-vcenter card-table">
-                <thead>
-                <tr>
-                    <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox"></th>
-                    <th class="w-8">Image</th>
-                    <th>Produit</th>
-                    <th>Prix</th>
-                    <th>Stock</th>
-                    <th>Status</th>
-                    <th class="w-1"></th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for product in products %}
+        {# Products Table #}
+        <div class="card border-0 shadow-sm">
+            <div class="table-responsive">
+                <table class="table table-hover table-vcenter card-table">
+                    <thead>
                     <tr>
-                        <td><input class="form-check-input m-0 align-middle" type="checkbox"></td>
-                        <td>
-                            <div class="product-image-wrapper">
-                                <img src="{{ asset(product.image) }}"
-                                     alt="{{ product.name }}"
-                                     class="product-image rounded">
-                            </div>
-                        </td>
-                        <td>
-                            <div class="d-flex flex-column">
-                                <span class="text-dark fw-medium">{{ product.name }}</span>
-                                <small class="text-muted">ID: #{{ product.id }}</small>
-                            </div>
-                        </td>
-                        <td class="text-dark fw-medium">
-                            {{ product.price|format_currency('EUR') }}
-                        </td>
-                        <td>
-                            {% if product.stock == 0 %}
-                                <div class="d-flex align-items-center">
-                                    <span class="status-dot bg-red me-2"></span>
-                                    <span class="text-danger fw-medium">Rupture</span>
-                                </div>
-                            {% elseif product.stock <= 5 %}
-                                <div class="d-flex align-items-center">
-                                    <span class="status-dot bg-yellow me-2"></span>
-                                    <span class="text-warning fw-medium">{{ product.stock }}</span>
-                                </div>
-                            {% else %}
-                                <div class="d-flex align-items-center">
-                                    <span class="status-dot bg-green me-2"></span>
-                                    <span class="text-success fw-medium">{{ product.stock }}</span>
-                                </div>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <label class="form-check form-switch">
-                                <input class="form-check-input" type="checkbox"
-                                       {% if product.active %}checked{% endif %}>
-                            </label>
-                        </td>
-                        <td>
-                            <div class="dropdown">
-                                <button class="btn btn-light btn-icon rounded-pill"
-                                        data-bs-toggle="dropdown">
-                                    <i class="bi bi-three-dots"></i>
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a href="{{ path('app_admin_product_edit', {id: product.id}) }}"
-                                       class="dropdown-item">
-                                        <i class="bi bi-pencil me-2"></i>
-                                        Modifier
-                                    </a>
-                                    <form method="post"
-                                          action="{{ path('app_admin_product_delete', {id: product.id}) }}"
-                                          onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
-                                        <button type="submit" class="dropdown-item text-danger">
-                                            <i class="bi bi-trash me-2"></i>
-                                            Supprimer
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </td>
+                        <th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox"></th>
+                        <th class="w-8">Image</th>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Stock</th>
+                        <th>Status</th>
+                        <th class="w-1"></th>
                     </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="7" class="text-center py-5">
-                            <div class="empty">
-                                <div class="empty-icon mb-4">
-                                    <i class="bi bi-box-seam display-6 text-muted"></i>
+                    </thead>
+                    <tbody>
+                    {% for product in products %}
+                        <tr>
+                            <td><input class="form-check-input m-0 align-middle" type="checkbox"></td>
+                            <td>
+                                <div class="product-image-wrapper">
+                                    <img src="{{ asset(product.image) }}"
+                                         alt="{{ product.name }}"
+                                         class="product-image rounded">
                                 </div>
-                                <p class="empty-title">Aucun produit trouvé</p>
-                                <p class="empty-subtitle text-muted">
-                                    Commencez par ajouter un nouveau produit.
-                                </p>
-                                <div class="empty-action">
-                                    <a href="{{ path('app_admin_product_create') }}"
-                                       class="btn btn-primary rounded-pill">
-                                        <i class="bi bi-plus-circle me-2"></i>
-                                        Ajouter un produit
-                                    </a>
+                            </td>
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="text-dark fw-medium">{{ product.name }}</span>
+                                    <small class="text-muted">ID: #{{ product.id }}</small>
                                 </div>
-                            </div>
-                        </td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% if products|length > 0 %}
-            <div class="card-footer bg-white d-flex align-items-center">
-                <p class="m-0 text-muted">
-                    Affichage de <span class="fw-medium">1</span> à
-                    <span class="fw-medium">{{ products|length }}</span> sur
-                    <span class="fw-medium">{{ products|length }}</span> produits
-                </p>
-                <ul class="pagination m-0 ms-auto">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1">
-                            <i class="bi bi-chevron-left"></i>
-                        </a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
-                    </li>
-                </ul>
+                            </td>
+                            <td class="text-dark fw-medium">
+                                {{ product.price|format_currency('EUR') }}
+                            </td>
+                            <td>
+                                {% if product.stock == 0 %}
+                                    <div class="d-flex align-items-center">
+                                        <span class="status-dot bg-red me-2"></span>
+                                        <span class="text-danger fw-medium">Rupture</span>
+                                    </div>
+                                {% elseif product.stock <= 5 %}
+                                    <div class="d-flex align-items-center">
+                                        <span class="status-dot bg-yellow me-2"></span>
+                                        <span class="text-warning fw-medium">{{ product.stock }}</span>
+                                    </div>
+                                {% else %}
+                                    <div class="d-flex align-items-center">
+                                        <span class="status-dot bg-green me-2"></span>
+                                        <span class="text-success fw-medium">{{ product.stock }}</span>
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <label class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox"
+                                           {% if product.active %}checked{% endif %}>
+                                </label>
+                            </td>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-light btn-icon rounded-pill"
+                                            data-bs-toggle="dropdown">
+                                        <i class="bi bi-three-dots"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-end">
+                                        <a href="{{ path('app_admin_product_edit', {id: product.id}) }}"
+                                           class="dropdown-item">
+                                            <i class="bi bi-pencil me-2"></i>
+                                            Modifier
+                                        </a>
+                                        <form method="post"
+                                              action="{{ path('app_admin_product_delete', {id: product.id}) }}"
+                                              onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
+                                            <button type="submit" class="dropdown-item text-danger">
+                                                <i class="bi bi-trash me-2"></i>
+                                                Supprimer
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center py-5">
+                                <div class="empty">
+                                    <div class="empty-icon mb-4">
+                                        <i class="bi bi-box-seam display-6 text-muted"></i>
+                                    </div>
+                                    <p class="empty-title">Aucun produit trouvé</p>
+                                    <p class="empty-subtitle text-muted">
+                                        Commencez par ajouter un nouveau produit.
+                                    </p>
+                                    <div class="empty-action">
+                                        <a href="{{ path('app_admin_product_create') }}"
+                                           class="btn btn-primary rounded-pill">
+                                            <i class="bi bi-plus-circle me-2"></i>
+                                            Ajouter un produit
+                                        </a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        {% endif %}
+            {% if products|length > 0 %}
+                <div class="card-footer bg-white d-flex align-items-center">
+                    <p class="m-0 text-muted">
+                        Affichage de <span class="fw-medium">1</span> à
+                        <span class="fw-medium">{{ products|length }}</span> sur
+                        <span class="fw-medium">{{ products|length }}</span> produits
+                    </p>
+                    <ul class="pagination m-0 ms-auto">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">
+                                <i class="bi bi-chevron-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
     </div>
-</div>
 {% endblock %}

@@ -6,6 +6,7 @@
 	use App\Traits\HasCrudOperations;
 	use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 	use Doctrine\Persistence\ManagerRegistry;
+	use function dd;
 	
 	class ProductRepository extends ServiceEntityRepository
 	{
@@ -32,9 +33,9 @@
 			$qb = $this->createQueryBuilder('p');
 			
 			if ($search){
-				$qb->andWhere('p.name LIKE :search')
-					->andWhere('p.description LIKE :search')
-					->setParameter('search', $search)
+				$qb->orWhere('p.name LIKE :search')
+					->orWhere('p.description LIKE :search')
+					->setParameter('search', '%'.str_replace(' ', '%', $search).'%')
 				;
 			}
 			return $qb
