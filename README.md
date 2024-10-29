@@ -4,9 +4,8 @@ This is a Symfony-based project for managing an online shop.
 
 ## Requirements
 
-- PHP 7.4 or higher
+- PHP 8.2 or higher
 - Composer
-- Node.js and npm
 - Symfony CLI (optional but recommended)
 
 ## Installation
