@@ -23,13 +23,7 @@ This is a Symfony-based project for managing an online shop.
     composer install
     ```
 
-3. **Install JavaScript dependencies:**
-
-    ```bash
-    npm install
-    ```
-
-4. **Set up environment variables:**
+3. **Set up environment variables:**
 
     Copy the `.env` file and adjust the environment variables as needed:
 
@@ -37,7 +31,7 @@ This is a Symfony-based project for managing an online shop.
     cp .env .env.local
     ```
 
-5. **Set up the database:**
+4. **Set up the database:**
 
     Update your database configuration in the `.env.local` file, then run:
 
@@ -46,10 +40,10 @@ This is a Symfony-based project for managing an online shop.
     php bin/console doctrine:migrations:migrate
     ```
 
-6. **Install assets:**
+5. **Create admin user:**
 
     ```bash
-    npm run dev
+    php bin/console app:create-admin
     ```
 
 ## Running the Application
