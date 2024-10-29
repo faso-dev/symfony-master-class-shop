@@ -14,7 +14,7 @@ This is a Symfony-based project for managing an online shop.
 1. **Clone the repository:**
 
     ```bash
-    git clone https://github.com/your-username/symfony-shop.git
+    git clone git@github.com:faso-dev/symfony-master-class-shop.git
     cd symfony-shop
     ```
 
