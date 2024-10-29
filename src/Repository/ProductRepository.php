@@ -6,7 +6,6 @@
 	use App\Traits\HasCrudOperations;
 	use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 	use Doctrine\Persistence\ManagerRegistry;
-	use function dd;
 	
 	class ProductRepository extends ServiceEntityRepository
 	{
